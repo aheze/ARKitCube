@@ -1,6 +1,8 @@
 # ARKitCube
 Demo app to render a cube with ARKit and SceneKit. Each face of the cube is a different color, and a different note is played for each.
 
+[![Video of the app](https://github.com/aheze/DeveloperAssets/blob/master/PlayArCube.png?raw=true)](https://drive.google.com/file/d/1YVZ8GmiXHFXEx-aGx4h4gKprpPeCjvaS/view?usp=sharing)
+
 Here is a table showing which note will be played for each face that is pressed:
 
 Face number | Color | Note
