@@ -1,5 +1,5 @@
 # ARKitCube
-Demo app to render a cube with ARKit and SceneKit. Each face of the cube is a different color, and a different note is played for each.
+Demo app to render a cube with ARKit and SceneKit. Each face of the cube is a different color, and a different note is played when they are tapped. All code is in [ViewController.swift](https://github.com/aheze/ARKitCube/blob/main/ARKitCube/ViewController.swift).
 
 [![Video of the app](https://github.com/aheze/DeveloperAssets/blob/master/PlayArCube.png?raw=true)](https://drive.google.com/file/d/1YVZ8GmiXHFXEx-aGx4h4gKprpPeCjvaS/view?usp=sharing)
 
