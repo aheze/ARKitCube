@@ -6,10 +6,10 @@
 //
 
 
-/// This project showcases how to make a red cube appear 20 centimeters in front of the cameras initial position. It works best in an open area.
+/// This project showcases how to make a cube appear 20 centimeters in front of the camera's initial position. It works best in an open area.
 /// Each face of the cube is a different color, and each face emits a different sound when it is tapped.
 ///
-/// Here is a table of which faces correspond with which colors and sounds:
+/// Here is a description of which faces correspond with which colors and sounds:
 /// Face 0 (front) - red - 1Do.mp3
 /// Face 1 (right) - orange - 2Re.mp3
 /// Face 2 (back) - yellow - 3Mi.mp3
