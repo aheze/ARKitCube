@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         /// Make an ARKit scene view
         let arKitSceneView = ARSCNView()
         
-        /// Add the ARKIT scene view as a subview
+        /// Add the ARKit scene view as a subview
         view.addSubview(arKitSceneView)
         
         /// Positioning constraints
@@ -104,18 +104,18 @@ class ViewController: UIViewController {
         /// Decode the audio from disk ahead of time to prevent a delay in playback
         audioSource.load()
         
-        /// add the audio player now
+        /// Add the audio player now
         cubeNode.addAudioPlayer(SCNAudioPlayer(source: audioSource))
         
-        /// Set up a gesture recognizer.
+        /// Set up a gesture recognizer
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hitTestCube))
         arKitSceneView.addGestureRecognizer(tapGestureRecognizer)
         
-        /// In case you need to access the scene view later
+        /// Just in case you need to access the ARKit scene view later
         self.arKitSceneView = arKitSceneView
     }
     
-    /// Handles the gesture recognizer, and plays a sound if the location of the tap is on top of the red cube.
+    /// Handles the gesture recognizer, and plays a sound if the location of the tap is on top of the cube.
     @objc func hitTestCube(sender: UITapGestureRecognizer) {
         
         /// Make sure the user's finger lifted from the screen
