@@ -89,6 +89,24 @@ class ViewController: UIViewController {
         /// Then, add the node to the ARKit scene
         arKitSceneView.scene.rootNode.addChildNode(cubeNode)
         
+        /// Configure positional audio in the AR Scene view
+        arKitSceneView.audioEnvironmentNode.distanceAttenuationParameters.maximumDistance = 4 /// how many meters to adjust the sound in fragments
+        arKitSceneView.audioEnvironmentNode.distanceAttenuationParameters.referenceDistance = 0.02 /// adjust the sound every 0.02 meters
+        arKitSceneView.audioEnvironmentNode.renderingAlgorithm = .auto
+        
+        /// Make the audio source
+        var audioSource = SCNAudioSource(fileNamed: "1Mono.mp3")!
+        
+        /// As an environmental sound layer, audio should play indefinitely
+        audioSource.loops = true
+        audioSource.isPositional = true
+    
+        /// Decode the audio from disk ahead of time to prevent a delay in playback
+        audioSource.load()
+        
+        /// add the audio player now
+        cubeNode.addAudioPlayer(SCNAudioPlayer(source: audioSource))
+        
         /// Set up a gesture recognizer.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hitTestCube))
         arKitSceneView.addGestureRecognizer(tapGestureRecognizer)
