@@ -129,7 +129,7 @@ class ViewController: UIViewController {
         /// Imaging a beam of light projecting from the on-screen location. Any objects that the beam hits are returned with this function.
         let results = arKitSceneView.hitTest(locationOfTap, options: [SCNHitTestOption.searchMode : 1])
         
-        /// See if the beam hit the red box
+        /// See if the beam hit the cube
         for result in results.filter( { $0.node.name == "ColorCube" }) {
             let cubeNode = result.node
             
@@ -144,7 +144,7 @@ class ViewController: UIViewController {
             colorAnimation.isRemovedOnCompletion = true
             material.addAnimation(colorAnimation, forKey: nil)
             
-            /// Play a different sound depending on which side is pressed
+            /// Play a different sound depending on which face was hit
             switch result.geometryIndex {
             case 0:
                 playSound(fileName: "1Do.mp3")
