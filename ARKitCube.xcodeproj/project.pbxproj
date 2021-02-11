@@ -15,7 +15,6 @@
 		3C0D624925D4897700243F2E /* 3Mi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C0D624125D4897700243F2E /* 3Mi.mp3 */; };
 		3C0D624A25D4897700243F2E /* 6La.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C0D624225D4897700243F2E /* 6La.mp3 */; };
 		3C0D624B25D4897700243F2E /* 5So.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C0D624325D4897700243F2E /* 5So.mp3 */; };
-		3C1DD3B825D4BC9900703C84 /* Locator.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C1DD3B725D4BC9900703C84 /* Locator.mp3 */; };
 		3C1DD3BD25D4BEAA00703C84 /* 1Mono.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C1DD3BC25D4BEAA00703C84 /* 1Mono.mp3 */; };
 		3C3B6C8A25D476EC0082B86C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3B6C8925D476EC0082B86C /* AppDelegate.swift */; };
 		3C3B6C8C25D476EC0082B86C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3B6C8B25D476EC0082B86C /* SceneDelegate.swift */; };
@@ -34,7 +33,6 @@
 		3C0D624125D4897700243F2E /* 3Mi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 3Mi.mp3; sourceTree = "<group>"; };
 		3C0D624225D4897700243F2E /* 6La.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 6La.mp3; sourceTree = "<group>"; };
 		3C0D624325D4897700243F2E /* 5So.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 5So.mp3; sourceTree = "<group>"; };
-		3C1DD3B725D4BC9900703C84 /* Locator.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Locator.mp3; sourceTree = "<group>"; };
 		3C1DD3BC25D4BEAA00703C84 /* 1Mono.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1Mono.mp3; sourceTree = "<group>"; };
 		3C3B6C8625D476EC0082B86C /* ARKitCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3B6C8925D476EC0082B86C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 				3C0D624225D4897700243F2E /* 6La.mp3 */,
 				3C0D623C25D4897700243F2E /* 7Ti.mp3 */,
 				3C0D623E25D4897700243F2E /* 8Do.mp3 */,
-				3C1DD3B725D4BC9900703C84 /* Locator.mp3 */,
 				3C1DD3BC25D4BEAA00703C84 /* 1Mono.mp3 */,
 			);
 			path = PianoNotes;
@@ -172,7 +169,6 @@
 				3C0D624425D4897700243F2E /* 7Ti.mp3 in Resources */,
 				3C0D624A25D4897700243F2E /* 6La.mp3 in Resources */,
 				3C0D624725D4897700243F2E /* 1Do.mp3 in Resources */,
-				3C1DD3B825D4BC9900703C84 /* Locator.mp3 in Resources */,
 				3C3B6C9325D476EE0082B86C /* Assets.xcassets in Resources */,
 				3C3B6C9125D476EC0082B86C /* Main.storyboard in Resources */,
 			);
