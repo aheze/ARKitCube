@@ -6,10 +6,10 @@
 //
 
 
-/// This project showcases how to make a red cube appear 20 centimeters in front of the cameras initial position. It works best in an open area.
+/// This project showcases how to make a cube appear 20 centimeters in front of the camera's initial position. It works best in an open area.
 /// Each face of the cube is a different color, and each face emits a different sound when it is tapped.
 ///
-/// Here is a table of which faces correspond with which colors and sounds:
+/// Here is a description of which faces correspond with which colors and sounds:
 /// Face 0 (front) - red - 1Do.mp3
 /// Face 1 (right) - orange - 2Re.mp3
 /// Face 2 (back) - yellow - 3Mi.mp3
@@ -108,14 +108,14 @@ class ViewController: UIViewController {
         /// Decode the audio from disk ahead of time to prevent a delay in playback
         audioSource.load()
         
-        /// add the audio player now
+        /// Add the audio player now
         cubeNode.addAudioPlayer(SCNAudioPlayer(source: audioSource))
         
-        /// Set up a gesture recognizer.
+        /// Set up a gesture recognizer
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hitTestCube))
         arKitSceneView.addGestureRecognizer(tapGestureRecognizer)
         
-        /// In case you need to access the scene view later
+        /// Just in case you need to access the ARKit scene view later
         self.arKitSceneView = arKitSceneView
         
         /// Set up the bottom buttons
@@ -123,7 +123,7 @@ class ViewController: UIViewController {
         setUpLocatorButton()
     }
     
-    /// Handles the gesture recognizer, and plays a sound if the location of the tap is on top of the red cube.
+    /// Handles the gesture recognizer, and plays a sound if the location of the tap is on top of the cube.
     @objc func hitTestCube(sender: UITapGestureRecognizer) {
         
         /// Make sure the user's finger lifted from the screen
@@ -144,7 +144,7 @@ class ViewController: UIViewController {
         /// Imaging a beam of light projecting from the on-screen location. Any objects that the beam hits are returned with this function.
         let results = arKitSceneView.hitTest(locationInSceneView, options: [SCNHitTestOption.searchMode : 1])
         
-        /// See if the beam hit the red box
+        /// See if the beam hit the cube
         for result in results.filter( { $0.node.name == "ColorCube" }) {
             let cubeNode = result.node
             
@@ -159,7 +159,7 @@ class ViewController: UIViewController {
             colorAnimation.isRemovedOnCompletion = true
             material.addAnimation(colorAnimation, forKey: nil)
             
-            /// Play a different sound depending on which side is pressed
+            /// Play a different sound depending on which face was hit
             switch result.geometryIndex {
             case 0:
                 playSound(fileName: "1Do.mp3")

@@ -1,6 +1,8 @@
 # ARKitCube
 Demo app to render a cube with ARKit and SceneKit, from this [reddit thread](https://www.reddit.com/r/iOSProgramming/comments/lguoe9/anybody_would_be_interested_on_helping_a_blind/?utm_source=share&utm_medium=web2x&context=3). Each face of the cube is a different color, and a different note is played when they are tapped. All code is in [ViewController.swift](https://github.com/aheze/ARKitCube/blob/main/ARKitCube/ViewController.swift).
 
+**Update:** Now, the cube also repeatedly emits a sound, [1Mono.mp3](https://drive.google.com/uc?export=view&id=1bJzocuIN-K95y7eJNd1hPNBFWbRgbuxh). This uses positional audio, so when you get closer, the sound is louder. And when you get further away, it gets softer.
+
 [![Video of the app](https://github.com/aheze/DeveloperAssets/blob/master/PlayArCube.png?raw=true)](https://drive.google.com/file/d/1YVZ8GmiXHFXEx-aGx4h4gKprpPeCjvaS/view?usp=sharing)
 
 Here is a table showing which note will be played for each face that is pressed:
