@@ -1,9 +1,9 @@
 # ARKitCube
 Demo app to render a cube with ARKit and SceneKit, from this [reddit thread](https://www.reddit.com/r/iOSProgramming/comments/lguoe9/anybody_would_be_interested_on_helping_a_blind/?utm_source=share&utm_medium=web2x&context=3). Each face of the cube is a different color, and a different note is played when they are tapped.
 
-## I've ported this project over to SwiftUI. The UIKit code is still available, in [Legacy-UIKit/](https://github.com/aheze/ARKitCube/tree/main/Legacy-UIKit).
+## I've ported this project over to SwiftUI. The UIKit code is still available, in [Legacy-UIKit](https://github.com/aheze/ARKitCube/tree/main/Legacy-UIKit).
 
-The main code is in [ContentView/swift](https://github.com/aheze/ARKitCube/blob/main/ARKitCube-SwiftUI/ARKitCube-SwiftUI/ContentView.swift).
+The main code is in [ContentView.swift](https://github.com/aheze/ARKitCube/blob/main/ARKitCube-SwiftUI/ARKitCube-SwiftUI/ContentView.swift).
 The code for porting the ARKit Scene View over to SwiftUI is in [ARSCNView.swift](https://github.com/aheze/ARKitCube/blob/main/ARKitCube-SwiftUI/ARKitCube-SwiftUI/ARSCNView.swift).
 
 Features:
