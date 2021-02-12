@@ -25,7 +25,6 @@
 
 import UIKit
 import ARKit
-import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -38,6 +37,11 @@ class ViewController: UIViewController {
         
         /// Make an ARKit scene view
         let arKitSceneView = ARSCNView()
+        
+        /// Make voiceover allow directly tapping the scene view.
+        arKitSceneView.isAccessibilityElement = true
+        arKitSceneView.accessibilityTraits = .allowsDirectInteraction
+        arKitSceneView.accessibilityLabel = "Use the rotor to enable Direct Touch"
         
         /// Add the ARKIT scene view as a subview
         view.addSubview(arKitSceneView)
@@ -95,7 +99,7 @@ class ViewController: UIViewController {
         arKitSceneView.audioEnvironmentNode.renderingAlgorithm = .auto
         
         /// Make the audio source
-        var audioSource = SCNAudioSource(fileNamed: "1Mono.mp3")!
+        let audioSource = SCNAudioSource(fileNamed: "1Mono.mp3")!
         
         /// As an environmental sound layer, audio should play indefinitely
         audioSource.loops = true
@@ -113,6 +117,10 @@ class ViewController: UIViewController {
         
         /// In case you need to access the scene view later
         self.arKitSceneView = arKitSceneView
+        
+        /// Set up the bottom buttons
+        setUpHitTestingButton()
+        setUpLocatorButton()
     }
     
     /// Handles the gesture recognizer, and plays a sound if the location of the tap is on top of the red cube.
@@ -124,10 +132,17 @@ class ViewController: UIViewController {
         /// Get the location of the tap. This is in on-screen coordinates.
         let locationOfTap = sender.location(in: arKitSceneView)
         
+        /// Move hit-testing logic into separate function
+        hitTestAtPosition(locationInSceneView: locationOfTap)
+    }
+    
+    func hitTestAtPosition(locationInSceneView: CGPoint) {
+        
+        
         /// Perform something called "Hit-testing". This projects on-screen coordinates to the coordinates of the SCNScene.
         /// Here, we project the on-screen location of the tap into the SCNScene, and see if there are any nodes there.
         /// Imaging a beam of light projecting from the on-screen location. Any objects that the beam hits are returned with this function.
-        let results = arKitSceneView.hitTest(locationOfTap, options: [SCNHitTestOption.searchMode : 1])
+        let results = arKitSceneView.hitTest(locationInSceneView, options: [SCNHitTestOption.searchMode : 1])
         
         /// See if the beam hit the red box
         for result in results.filter( { $0.node.name == "ColorCube" }) {
@@ -178,5 +193,135 @@ class ViewController: UIViewController {
             }
         }
     }
-}
+    
+    /// Make a button that hit-tests the point at the center of the screen for you
+    /// This will be at the bottom-left corner
+    func setUpHitTestingButton() {
+        let hitTestButton = UIButton()
+        hitTestButton.setImage(UIImage(systemName: "plus"), for: .normal) /// set the image of the button to a plus icon, which kind of looks like a crosshair
+        hitTestButton.tintColor = UIColor.red /// color of the image
+        hitTestButton.backgroundColor = UIColor.white
+        hitTestButton.layer.cornerRadius = 8 /// make some rounded corners
+        
+        /// Make the button call locatorButtonPressed when it is pressed
+        hitTestButton.addTarget(self, action: #selector(hitTestButtonPressed), for: .touchUpInside)
+        
+        /// for VoiceOver
+        hitTestButton.accessibilityLabel = "Hit-test at the center of the screen"
+        
+        view.addSubview(hitTestButton)
+        
+        /// position the button
+        hitTestButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hitTestButton.leftAnchor.constraint(equalTo: view.leftAnchor),
+            hitTestButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hitTestButton.widthAnchor.constraint(equalToConstant: 80),
+            hitTestButton.heightAnchor.constraint(equalToConstant: 80)
+        ])
+    }
+    
+    /// called when the locator button is pressed
+    @objc func hitTestButtonPressed(_ sender: UIButton) {
+        
+        /// Announce to VoiceOver
+        UIAccessibility.post(notification: .announcement, argument: "Hit testing at center of screen")
+        
+        /// Get the center of the ARKit scene (on-screen coordinates)
+        let centerPoint = arKitSceneView.center
+        
+        /// Call the hit-test function
+        hitTestAtPosition(locationInSceneView: centerPoint)
+    }
+    
+    /// Make a button that tells you where the cube is
+    /// This will be at the bottom-right corner
+    func setUpLocatorButton() {
+        let locatorButton = UIButton()
+        locatorButton.setImage(UIImage(systemName: "location"), for: .normal) /// set the image of the button to the location icon, which is an arrow pointing North-East
+        locatorButton.tintColor = UIColor.blue /// color of the image
+        locatorButton.backgroundColor = UIColor.white
+        locatorButton.layer.cornerRadius = 8 /// make some rounded corners
+        
+        /// Make the button call locatorButtonPressed when it is pressed
+        locatorButton.addTarget(self, action: #selector(locatorButtonPressed), for: .touchUpInside)
+        
+        /// for VoiceOver
+        locatorButton.accessibilityLabel = "Speak location of the cube. Make sure to turn on Direct Touch"
+        
+        view.addSubview(locatorButton)
+        
+        /// position the button
+        locatorButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            locatorButton.rightAnchor.constraint(equalTo: view.rightAnchor),
+            locatorButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            locatorButton.widthAnchor.constraint(equalToConstant: 80),
+            locatorButton.heightAnchor.constraint(equalToConstant: 80)
+        ])
+    }
+    
+    /// called when the locator button is pressed
+    @objc func locatorButtonPressed(_ sender: UIButton) {
+        for node in arKitSceneView.scene.rootNode.childNodes {
+            if node.name == "ColorCube" {
+                
+                /// the camera node
+                let cameraNode = arKitSceneView.pointOfView!
+                
+                /// the following code calculates the angle between the camera and the cube
+                /// most code is adapted from this stack overflow answer: https://stackoverflow.com/a/57359650/14351818
+                /// make a temporary node which will represent the direction of the camera
+                let lookingDirectionNode = SCNNode()
+                let position = SCNVector3(x: 0, y: 0, z: -2) /// put it 2 meters in front
+                updatePositionAndOrientationOf(lookingDirectionNode, withPosition: position, relativeTo: cameraNode) /// set the position to 2 meters in front of camera
+                
+                /// get angle between looking direction node and the color cube node, with the camera node as the vertex
+                let angle = calculateAngleBetween3Positions(vertex: cameraNode.position, pos2: lookingDirectionNode.position, pos3: node.position)
+                let angleInDegrees = angle * 180 / .pi /// convert from radians to degrees
+                
+                /// make voiceover speak how far away the cube is
+                UIAccessibility.post(notification: .announcement, argument: "The cube is \(Int(angleInDegrees)) degrees away")
+                
+            }
+        }
+    }
+    
+    /// The following 2 functions are for calculating the angle between the camera and the cube
+    /// from this stack overflow answer: https://stackoverflow.com/a/57359650/14351818
+    
+    /// put a node in front of another node
+    /// we use this to put a temporary node in front of the camera for out calculations
+    func updatePositionAndOrientationOf(_ node: SCNNode, withPosition position: SCNVector3, relativeTo referenceNode: SCNNode) {
+        let referenceNodeTransform = matrix_float4x4(referenceNode.transform)
 
+        /// Setup a translation matrix with the desired position
+        var translationMatrix = matrix_identity_float4x4
+        translationMatrix.columns.3.x = position.x
+        translationMatrix.columns.3.y = position.y
+        translationMatrix.columns.3.z = position.z
+
+        /// Combine the configured translation matrix with the referenceNode's transform to get the desired position AND orientation
+        let updatedTransform = matrix_multiply(referenceNodeTransform, translationMatrix)
+        node.transform = SCNMatrix4(updatedTransform)
+    }
+    
+    /// calculate the angle between 3 positions
+    /// the vertex should be the camera node
+    /// pos2 and pos3 are the temporary looking node and the cube node
+    func calculateAngleBetween3Positions(vertex: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Float {
+        let v1 = SCNVector3(x: pos2.x-vertex.x, y: pos2.y-vertex.y, z: pos2.z-vertex.z)
+        let v2 = SCNVector3(x: pos3.x-vertex.x, y: pos3.y-vertex.y, z: pos3.z-vertex.z)
+        
+        let v1Magnitude = sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z)
+        let v1Normal = SCNVector3(x: v1.x/v1Magnitude, y: v1.y/v1Magnitude, z: v1.z/v1Magnitude)
+        
+        let v2Magnitude = sqrt(v2.x * v2.x + v2.y * v2.y + v2.z * v2.z)
+        let v2Normal = SCNVector3(x: v2.x/v2Magnitude, y: v2.y/v2Magnitude, z: v2.z/v2Magnitude)
+        
+        let result = v1Normal.x * v2Normal.x + v1Normal.y * v2Normal.y + v1Normal.z * v2Normal.z
+        let angle = acos(result)
+        
+        return angle
+    }
+}
